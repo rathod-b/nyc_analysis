@@ -97,8 +97,8 @@ function storage_optimize()
     @variable(model, c[B, T], binary=true)
 
     # DISCHARGING
-    @constraint(model, sum(c[:disch, t] for t in T) >= 4190)
-    @constraint(model, sum(c[:disch, t] for t in T) <= 6500)
+    @constraint(model, sum(c[:disch, t] for t in T) >= 3000)
+    @constraint(model, sum(c[:disch, t] for t in T) <= 6000)
 
     # For all timesteps, if discharge, then storage discharges <= 0.25
     @constraint(model, [t in T], c[:disch, t] => {
@@ -110,8 +110,8 @@ function storage_optimize()
     @constraint(model, [t in T], sum(a[:stor_disch, t] + a[:grid, t]) >= 1.0)
 
     # CHARGING
-    @constraint(model, sum(c[:ch, t] for t in T) >= 2000)
-    @constraint(model, sum(c[:ch, t] for t in T) <= 8000)
+    @constraint(model, sum(c[:ch, t] for t in T) >= 3000)
+    @constraint(model, sum(c[:ch, t] for t in T) <= 6000)
 
     # For all timesteps, if discharge, then storage discharges <= 0.25
     @constraint(model, [t in T], c[:disch, t] => {
@@ -127,7 +127,7 @@ function storage_optimize()
     @variable(model, b[S, T])
     @constraint(model, [t in T], sum(b[:bess_mwh, t] + a[:stor_ch, t]) <= 1.0)
     @constraint(model, [t in T], sum(b[:bess_mwh, t] - a[:stor_disch, t]) >= 0.0)
-    @constraint(model, sum(b[:bess_mwh, t] for t in T) <= 8760.0)
+    @constraint(model, sum(b[:bess_mwh, t] for t in T) <= 4380.0)
     
     # Storage charge/discharge equality constraint
     @constraint(model, sum(a[:stor_disch, t] for t in T) - sum(a[:stor_ch, t] for t in T) <= 0.01)
@@ -164,8 +164,8 @@ function solar_storage()
     @variable(model, c[B, T], binary=true)
 
     # DISCHARGING
-    @constraint(model, sum(c[:disch, t] for t in T) >= 5500)
-    @constraint(model, sum(c[:disch, t] for t in T) <= 6500)
+    @constraint(model, sum(c[:disch, t] for t in T) >= 3000)
+    @constraint(model, sum(c[:disch, t] for t in T) <= 6000)
 
     # For all timesteps, if discharge, then storage discharges <= 0.25
     @constraint(model, [t in T], c[:disch, t] => {
@@ -177,8 +177,8 @@ function solar_storage()
     @constraint(model, [t in T], sum(a[:solar, t] + a[:stor_disch, t] + a[:grid, t]) >= 1.0)
 
     # CHARGING
-    @constraint(model, sum(c[:ch, t] for t in T) >= 2000)
-    @constraint(model, sum(c[:ch, t] for t in T) <= 8000)
+    @constraint(model, sum(c[:ch, t] for t in T) >= 3000)
+    @constraint(model, sum(c[:ch, t] for t in T) <= 6000)
 
     # For all timesteps, if charge, then storage discharges <= 0.25
     @constraint(model, [t in T], c[:disch, t] => {
@@ -194,7 +194,7 @@ function solar_storage()
     @variable(model, b[S, T])
     @constraint(model, [t in T], sum(b[:bess_mwh, t] + a[:stor_ch, t]) <= 1.0)
     @constraint(model, [t in T], sum(b[:bess_mwh, t] - a[:stor_disch, t]) >= 0.0)
-    @constraint(model, sum(b[:bess_mwh, t] for t in T) <= 8760.0)
+    @constraint(model, sum(b[:bess_mwh, t] for t in T) <= 4380.0)
     
     # Storage charge/discharge equality constraint
     @constraint(model, sum(a[:stor_disch, t] for t in T) - sum(a[:stor_ch, t] for t in T) <= 0.01)
